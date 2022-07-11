@@ -9,10 +9,15 @@ const io = require('socket.io')(server);
 app.use(express.static(path.join(__dirname, 'public')));
 
 //webSockets 
-io.on('connection', (socket) =>{
+io.on('connection', (socket) =>{ //es la conexion al socket
     console.log('new connection Socket_id: '+socket.id)
-    socket.on('event', function(data){
-        console.log('event fired');
-        });
+    socket.on('chat:message', function(data){//Socket.on escucha los eventos
+            console.log(data);
+            io.sockets.emit('chat:message',data);
+        });   
+    
+    socket.on('chat:typing', function (user) {
+        socket.broadcast.emit('chat:typing',user)//emite a todos menos al que origino el envio
+    })
 })
 
