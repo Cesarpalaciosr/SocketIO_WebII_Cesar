@@ -18,7 +18,12 @@
   },
   "homepage": "https://github.com/Cesarpalaciosr/SocketIO_WebII_Cesar#readme",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.18.1",
+    "moment": "^2.29.4",
     "socket.io": "^4.5.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.19"
   }
 }
