@@ -21,7 +21,7 @@ app.use(function (req, res, next) {
   );
   next();
 });
-
+``
 //webSockets 
 io.on('connection', (socket) =>{ //es la conexion al socket
     console.log('new connection Socket_id: '+socket.id)
