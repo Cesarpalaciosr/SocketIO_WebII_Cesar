@@ -47,7 +47,7 @@ span{
 }
 
 .but{
-    background: rgba(64, 144, 64, 0.933);
+    background:#717bc4;
     color: #fff;
     font-size: 18px;
     border: 0;
@@ -55,17 +55,50 @@ span{
     width: 100%;
     border-radius: 15px;
 }
+.btn {
+	cursor: pointer;
+	padding: 5px 15px;
+	background: #717bc4;
+	color: #00020c;
+	border: 0;
+	font-size: 17px;
+}
+
 /*
 #share::-webkit-file-upload-button {
-    /*visibility: hidden;s
+    visibility: hidden;
   }
-
+*//*
   #share{
-    width: 6px;
-	height: 6px;
-	opacity: 0;
-	/*overflow: hidden;
-	position: absolute;
-	z-index: -1;
+        background-color: #941B80;
+        color: #fff;
+        cursor: pointer;
+        font-size: 18px;
+        font-weight: bold;
+        margin: 0 auto 0;
+        min-height: 15px;
+        overflow: hidden;
+        padding: 10px;
+        position: relative;
+        text-align: center;
+        width: 400px;      
   }
 */
+  #share::-webkit-file-upload-button {
+    visibility: hidden;
+  }
+  #share::before {
+    content: 'Envia una image';
+    display: inline-block;
+    background: linear-gradient(top, #f9f9f9, #e3e3e3);
+    border: 1px solid #999;
+    border-radius: 3px;
+    padding: 5px 8px;
+    outline: none;
+    white-space: nowrap;
+    -webkit-user-select: none;
+    cursor: pointer;
+    text-shadow: 1px 1px #fff;
+    font-weight: 700;
+    font-size: 10pt;
+  }

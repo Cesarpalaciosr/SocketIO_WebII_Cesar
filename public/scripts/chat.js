@@ -58,6 +58,11 @@ socket.on('chat:typing', function (user) {
     `
 })
 
+socket.on('addimage', ()=>{
+
+})
+
+
 /*
     Funciones javascript para el cliente
 */
@@ -89,16 +94,26 @@ socket.on('chat:typing', function (user) {
     
     //funcion cargar archivos
 //boton de compartir imagen
-btns.addEventListener('addimage', ()=>{
+/*btns.addEventListener('click', ()=>{
     
     const fileReader = new FileReader();
     fileReader.readAsArrayBuffer(file.files[0]);
     
     fileReader.onload = (event) => {
         console.log('complete File read succesfully')
+        socket.emit('user_image', event.target.resul)
     }
-})
+})*/
 
+function upload(files) {
+    socket.emit("upload", files[0], (status) => {
+        console.log(status);
+        
+      } 
+    {username: username,
+    room: room
+},  );
+}
 //mensaje de usuario esta escribiendo
 message.addEventListener('keypress', function () {
     socket.emit('chat:typing', username);

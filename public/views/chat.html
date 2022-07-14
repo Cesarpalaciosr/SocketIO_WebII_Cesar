@@ -24,7 +24,7 @@
         <ul id="users"></ul>
         <input type="text" id="message" placeholder="Message"/>
         <button class = "but" id = "send">Send</button>
-        <input  type = "file" class = "but" id = "share"  accept="image/png, image/jpg, image/gif, image/jpeg"/>
+        <input  type = "file" class = "but" id = "share" onchange="upload(this.files)" accept="image/png, image/jpg, image/gif, image/jpeg"/>
         <a id="leave-btn" class="btn">Leave Room</a>
     </div>
     <script

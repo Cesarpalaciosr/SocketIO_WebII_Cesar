@@ -7,7 +7,7 @@ const server = app.listen (port, () => { console.log(`sever on port: ${port}`) }
 const io = require('socket.io')(server);
 const formatMessage = require('./utils/messages')
 const {userJoin, userLeave, getCurrentUser, getRoomUsers} = require('./utils/user')
-
+const  { writeFile } = require("fs");
 
 //static files
 app.use(express.static(path.join(__dirname, 'public')));
@@ -18,7 +18,7 @@ app.use(function (req, res, next) {
   res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
   res.setHeader(
     "Access-Control-Allow-Headers",
-    "application/json",
+    "application/json","X-Content-Type-Options: nosniff",
     "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With"
   );
   next();
@@ -59,15 +59,20 @@ io.on('connection', (socket) =>{ //es la conexion al socket
       socket.broadcast.to(user.room).emit('chat:typing',user)//emite a todos menos al que origino el envio
     })
 
-    socket.on('addimage', function (file) {
-        io.sockets.emit('add.image'), `${file.username} envio este archivo`
-    })
+    socket.on("upload", (file, callback) => {
+      console.log(file); // <Buffer 25 50 44 ...>
+      io.sockets.emit('addimage', `${file.username} envio este archivo`)
+      // save the content to the disk, for example
+      writeFile("/tmp/upload", file, (err) => {
+        callback({ message: err ? "failure" : "success" });
+      });
+    });
 
-    socket.on ('disconnect', (data) =>{
+    socket.on ('disconnect', () =>{
         const user = userLeave(socket.id);
         
         if (user) {
-            io.to(user.room).emit('message', formatMessage(data.username, ` ha salido del chat`))
+            io.to(user.room).emit('chat:message', formatMessage(user.username, ` ha salido del chat`))
             // Send users and room info
             io.to(user.room).emit('roomUsers', {
               room: user.room,
