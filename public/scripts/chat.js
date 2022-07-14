@@ -8,8 +8,7 @@ let btns = document.getElementById('share');
 const file = document.getElementById('file');
 //const status = document.getElementById('status');        
 let output = document.getElementById('output');
-let actions = document.getElementById('actions');
-
+let actions = document.getElementById('actions'); 
 const { username, room } = Qs.parse(location.search, {
     ignoreQueryPrefix: true,
 });
@@ -17,7 +16,7 @@ const socket = io(); //no lleva argumento porque esta en el mismo dominio
 
 
 /*
-        Socket evenst
+        Socket events
 */
 // Join chatroom
 socket.emit('joinRoom', { username, room });
@@ -26,53 +25,67 @@ socket.emit('joinRoom', { username, room });
 socket.on('roomUsers', ({ room, users }) => {
     outputRoomName(room);
     outputUsers(users);
-});
+  });
 
-//al cargar los mensajes enviados borra la notificacion de 'escribiendo'
+  socket.on('join:message',function (data) {
+    console.log(data);
+
+    actions.innerHTML = '';
+    output.innerHTML += `<p> <span>${data.time} </span>
+    <strong>${data.username}</strong>
+    </p>
+    `
+    output.scrollTop = output.scrollHeight;
+})
+
+
+  //al cargar los mensajes enviados borra la notificacion de 'escribiendo'
 socket.on('chat:message',function (data) {
+    console.log(data);
+
     actions.innerHTML = '';
     output.innerHTML += `<p> <span>${data.time} </span>
     <strong>${data.username}</strong>: 
     ${data.message}
     </p>
     `
-    output.scrollTop =output.scrollHeight;
+    output.scrollTop = output.scrollHeight;
 })
 
 socket.on('chat:typing', function (user) {
     actions.innerHTML += `
-    <p><em>${user} esta escribiendo...</em></p>
+    <p><em>${user.username} esta escribiendo...</em></p>
     `
 })
 
 /*
     Funciones javascript para el cliente
 */
-// Add room name to DOM
-function outputRoomName(room) {
-    roomName.innerText = room;
-}
-// mostrar lista de usuarios conectados
-function outputUsers(users) {
-      userList.innerHTML = '';
-      users.forEach((user) => {
-          const li = document.createElement('li');
-          li.innerText = user.username;
-          userList.appendChild(li);
-        });
-    }
-    
     //boton de enviar
     btn.addEventListener('click', () => {
         socket.emit('chat:message', {//Socket.emit envia datos al servidor
             message: message.value,
-            username: username
+            username: username,
+            room: room
         })
         console.log({
             username: username,
             message: message.value,
+            room: room
         })
     })
+
+    addEventListener('keypress', () => {
+        socket.emit('chat:typing', {
+            username: username,
+            room: room
+        })
+        console.log({
+            username: username,
+            room: room
+        })
+    })
+    
     
     //funcion cargar archivos
 //boton de compartir imagen
@@ -88,7 +101,7 @@ btns.addEventListener('addimage', ()=>{
 
 //mensaje de usuario esta escribiendo
 message.addEventListener('keypress', function () {
-    socket.emit('chat:typing', username.value);
+    socket.emit('chat:typing', username);
 })
 
 //Prompt the user before leave chat room
@@ -99,3 +112,18 @@ document.getElementById('leave-btn').addEventListener('click', () => {
     } else {
     }
   });
+
+  //nombre de la sala
+  function outputRoomName(room) {
+        roomName.innerText = room;
+  }
+
+  //users al dom
+  function outputUsers(users) {
+    userList.innerHTML = '';
+  users.forEach((user) => {
+    const li = document.createElement('li');
+    li.innerText = user.username;
+    userList.appendChild(li);
+  });
+  }

@@ -39,6 +39,7 @@ input{
     background: #eee;
     display: block;
     width: 100%;
+    cursor: pointer;
 }
 
 span{
@@ -54,3 +55,17 @@ span{
     width: 100%;
     border-radius: 15px;
 }
+/*
+#share::-webkit-file-upload-button {
+    /*visibility: hidden;s
+  }
+
+  #share{
+    width: 6px;
+	height: 6px;
+	opacity: 0;
+	/*overflow: hidden;
+	position: absolute;
+	z-index: -1;
+  }
+*/
