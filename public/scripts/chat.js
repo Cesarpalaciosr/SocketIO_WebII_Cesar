@@ -108,11 +108,8 @@ socket.on('addimage', ()=>{
 function upload(files) {
     socket.emit("upload", files[0], (status) => {
         console.log(status);
-        
       } 
-    {username: username,
-    room: room
-},  );
+ );
 }
 //mensaje de usuario esta escribiendo
 message.addEventListener('keypress', function () {

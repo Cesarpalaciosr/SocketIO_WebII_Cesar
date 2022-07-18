@@ -59,9 +59,9 @@ io.on('connection', (socket) =>{ //es la conexion al socket
       socket.broadcast.to(user.room).emit('chat:typing',user)//emite a todos menos al que origino el envio
     })
 
-    socket.on("upload", (file, callback) => {
+    socket.on("upload", ( file, callback ) => {
       console.log(file); // <Buffer 25 50 44 ...>
-      io.sockets.emit('addimage', `${file.username} envio este archivo`)
+  //    io.sockets.emit('upload', `${file} envio este archivo`)
       // save the content to the disk, for example
       writeFile("/tmp/upload", file, (err) => {
         callback({ message: err ? "failure" : "success" });
